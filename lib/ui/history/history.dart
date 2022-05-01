@@ -72,49 +72,58 @@ class History extends StatelessWidget {
   }
 
   Widget _getStopWatchPanel() {
-    return Consumer<HistoryProvider>(
-      builder: (context, provider, child) {
-        return SizedBox(
-          height: 100,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 12,
-            ),
-            child: LayoutBuilder(
-              builder: ((context, constraints) {
-                return _getStopWatch(provider, constraints.maxHeight);
-              }),
-            ),
-          ),
-        );
-      },
+    return SizedBox(
+      height: 100,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 12,
+        ),
+        child: LayoutBuilder(
+          builder: ((context, constraints) {
+            return _getStopWatch(constraints.maxHeight);
+          }),
+        ),
+      ),
     );
   }
 
-  Row _getStopWatch(HistoryProvider provider, double height) {
+  Widget _getStopWatch(double height) {
     return Row(
       children: [
-        ElevatedButton(
-          onPressed: provider.onStopWatchTap,
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Icon(_getStopWatchIcon(provider), size: 40),
-          ),
-          style: ButtonStyle(
-            shape: MaterialStateProperty.all(const CircleBorder()),
-          ),
+        Selector<HistoryProvider, bool>(
+          selector: (context, value) => value.isRunning,
+          builder: (context, value, child) {
+            return ElevatedButton(
+              onPressed: Provider.of<HistoryProvider>(context).onStopWatchTap,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Icon(_getStopWatchIcon(value), size: 40),
+              ),
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all(const CircleBorder()),
+              ),
+            );
+          },
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              provider.display,
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w800,
-              ),
+            Selector<HistoryProvider, String>(
+              selector: (context, value) => value.display,
+              shouldRebuild: (old, item) {
+                return old != item;
+              },
+              builder: (context, value, child) {
+                return Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w800,
+                  ),
+                );
+              },
             ),
             Row(
               children: [
@@ -146,21 +155,28 @@ class History extends StatelessWidget {
             ),
           ],
         ),
-        if (provider.ticks != 0) ...[
-          const Spacer(),
-          Align(
-            alignment: Alignment.topCenter,
-            child: TextButton(
-              onPressed: provider.reset,
-              child: const Text('Stop'),
-            ),
-          ),
-        ],
+        const Spacer(),
+        Selector<HistoryProvider, bool>(
+          selector: (context, value) => value.isRunning,
+          builder: (context, value, child) {
+            if (value) {
+              return Align(
+                alignment: Alignment.topCenter,
+                child: TextButton(
+                  onPressed: Provider.of<HistoryProvider>(context, listen: false).reset,
+                  child: const Text('Stop'),
+                ),
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
+        ),
       ],
     );
   }
 
-  IconData _getStopWatchIcon(HistoryProvider provider) {
-    return provider.isRunning ? Icons.pause : Icons.play_arrow;
+  IconData _getStopWatchIcon(bool isRunning) {
+    return isRunning ? Icons.pause : Icons.play_arrow;
   }
 }
