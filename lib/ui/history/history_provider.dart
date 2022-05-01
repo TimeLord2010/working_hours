@@ -42,7 +42,7 @@ class HistoryProvider with ChangeNotifier {
     } else {
       begin = DateTime.now();
       _stopWatchTimer.onExecute.add(StopWatchExecute.start);
-      tickSubscription = _stopWatchTimer.rawTime.listen(null);
+      tickSubscription = _stopWatchTimer.secondTime.listen(null);
       tickSubscription!.onData((data) {
         ticks = data;
         notifyListeners();
