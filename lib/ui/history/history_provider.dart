@@ -14,6 +14,7 @@ class HistoryProvider with ChangeNotifier {
   final _stopWatchTimer = StopWatchTimer();
 
   StreamSubscription<int>? tickSubscription;
+  StreamSubscription<int>? secondSubscription;
 
   int ticks = 0;
   DateTime? begin;
@@ -22,6 +23,7 @@ class HistoryProvider with ChangeNotifier {
   void dispose() async {
     super.dispose();
     tickSubscription?.cancel();
+    secondSubscription?.cancel();
     await _stopWatchTimer.dispose(); // Need to call dispose function.
   }
 
@@ -29,11 +31,12 @@ class HistoryProvider with ChangeNotifier {
 
   String get display {
     int hours = StopWatchTimer.getRawHours(ticks);
-    return StopWatchTimer.getDisplayTime(
+    final result = StopWatchTimer.getDisplayTime(
       ticks,
       hours: hours != 0,
       milliSecond: false,
     );
+    return result;
   }
 
   void onStopWatchTap() {
@@ -42,9 +45,12 @@ class HistoryProvider with ChangeNotifier {
     } else {
       begin = DateTime.now();
       _stopWatchTimer.onExecute.add(StopWatchExecute.start);
-      tickSubscription = _stopWatchTimer.secondTime.listen(null);
+      tickSubscription = _stopWatchTimer.rawTime.listen(null);
       tickSubscription!.onData((data) {
         ticks = data;
+      });
+      secondSubscription = _stopWatchTimer.secondTime.listen(null);
+      secondSubscription!.onData((data) {
         notifyListeners();
       });
     }
