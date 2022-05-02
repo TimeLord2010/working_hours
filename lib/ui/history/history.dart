@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:work_hours_tracking/models/tag.dart';
+import 'package:work_hours_tracking/models/tag.dart' as tm;
 import 'package:work_hours_tracking/ui/history/history_provider.dart';
 import 'package:work_hours_tracking/models/interval.dart' as im;
 import 'package:work_hours_tracking/ui/history/history_record/history_record.dart';
@@ -54,7 +53,7 @@ class History extends StatelessWidget {
   }
 
   Widget _getTagSummaryContent(Iterable<im.Interval> data) {
-    final processed = processTagSummary(data);
+    final processed = tm.processTagSummary(data);
     List<Widget> items = [];
     for (final item in processed.entries) {
       final tagName = item.key?.tag ?? 'Total';
@@ -109,6 +108,9 @@ class History extends StatelessWidget {
         final item = data.elementAt(index);
         return HistoryRecord(
           interval: item,
+          onDelete: () {
+            // TODO
+          },
         );
       },
       itemCount: data.length,
@@ -171,19 +173,6 @@ class History extends StatelessWidget {
             ),
             Row(
               children: [
-                InputChip(
-                  deleteIcon: Icon(
-                    MdiIcons.closeCircle,
-                    color: Colors.grey.shade300,
-                  ),
-                  onDeleted: () {},
-                  label: const Text('G4Flex',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  onPressed: () {},
-                  backgroundColor: Colors.green,
-                ),
                 InputChip(
                   label: const Text('+'),
                   onPressed: () {},
