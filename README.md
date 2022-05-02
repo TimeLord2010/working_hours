@@ -5,7 +5,7 @@ Suports tags and can generate reports.
 
 - [X] Stop watch;
 - [X] Record History;
-- [ ] Edit history record;
+- 🛠️ Edit history record;
 - [ ] Filter history by date range;
 - [ ] Filter history by tags;
 - [ ] Tags;
