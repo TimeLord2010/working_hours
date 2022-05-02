@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:work_hours_tracking/models/tag.dart';
 import 'package:work_hours_tracking/ui/history/history_provider.dart';
 import 'package:work_hours_tracking/models/interval.dart' as im;
-import 'package:work_hours_tracking/ui/providers/interval_provider.dart';
 import 'package:work_hours_tracking/utils/date.dart';
 import 'package:work_hours_tracking/utils/duration.dart';
 
@@ -25,16 +25,60 @@ class History extends StatelessWidget {
         const Divider(),
         _getHistorySearchPanel(),
         const Divider(),
+        SizedBox(
+          height: 80,
+          child: Consumer<HistoryProvider>(
+            builder: (context, value, child) {
+              return FutureBuilder<Iterable<im.Interval>>(
+                future: value.intervalsCache.retrive,
+                builder: (context, snap) {
+                  if (snap.hasData) {
+                    final data = snap.data!;
+                    final processed = processTagSummary(data);
+                    List<Widget> items = [];
+                    for (final item in processed.entries) {
+                      final tagName = item.key?.tag ?? 'Total';
+                      items.add(Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            tagName,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),
+                          ),
+                          Text(item.value.toReadableString()),
+                        ],
+                      ));
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: items,
+                      ),
+                    );
+                  } else if (snap.hasError) {
+                    return Text(snap.error.toString());
+                  } else {
+                    return const CircularProgressIndicator.adaptive();
+                  }
+                },
+              );
+            },
+          ),
+        ),
       ],
     );
   }
 
   Widget _getHistorySearchPanel() {
-    return Consumer<IntervalProvider>(
-      builder: (context, provider, child) {
-        return Expanded(
-          child: FutureBuilder<Iterable<im.Interval>>(
-            future: provider.find(),
+    return Expanded(
+      child: Consumer<HistoryProvider>(
+        builder: (context, provider, child) {
+          return FutureBuilder<Iterable<im.Interval>>(
+            future: provider.intervalsCache.retrive,
             builder: (context, snap) {
               if (snap.hasData) {
                 final data = snap.data!;
@@ -45,9 +89,9 @@ class History extends StatelessWidget {
                 return const CircularProgressIndicator.adaptive();
               }
             },
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
@@ -55,10 +99,9 @@ class History extends StatelessWidget {
     return ListView.builder(
       itemBuilder: (context, index) {
         final item = data.elementAt(index);
-        final duration = item.end.difference(item.begin);
         return ListTile(
           title: Text(
-            duration.toReadableString(),
+            item.duration.toReadableString(),
             style: const TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 16,
@@ -137,9 +180,7 @@ class History extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                       )),
-                  onPressed: () {
-                    print('I am the one thing in life.');
-                  },
+                  onPressed: () {},
                   backgroundColor: Colors.green,
                 ),
                 InputChip(
