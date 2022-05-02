@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:work_hours_tracking/models/tag.dart';
 import 'package:work_hours_tracking/ui/history/history_provider.dart';
 import 'package:work_hours_tracking/models/interval.dart' as im;
-import 'package:work_hours_tracking/utils/date.dart';
+import 'package:work_hours_tracking/ui/history/history_record/history_record.dart';
 import 'package:work_hours_tracking/utils/duration.dart';
 
 class History extends StatelessWidget {
@@ -25,51 +25,59 @@ class History extends StatelessWidget {
         const Divider(),
         _getHistorySearchPanel(),
         const Divider(),
-        SizedBox(
-          height: 80,
-          child: Consumer<HistoryProvider>(
-            builder: (context, value, child) {
-              return FutureBuilder<Iterable<im.Interval>>(
-                future: value.intervalsCache.retrive,
-                builder: (context, snap) {
-                  if (snap.hasData) {
-                    final data = snap.data!;
-                    final processed = processTagSummary(data);
-                    List<Widget> items = [];
-                    for (final item in processed.entries) {
-                      final tagName = item.key?.tag ?? 'Total';
-                      items.add(Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            tagName,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),
-                          ),
-                          Text(item.value.toReadableString()),
-                        ],
-                      ));
-                    }
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: items,
-                      ),
-                    );
-                  } else if (snap.hasError) {
-                    return Text(snap.error.toString());
-                  } else {
-                    return const CircularProgressIndicator.adaptive();
-                  }
-                },
-              );
-            },
-          ),
-        ),
+        _getTagSummaryPanel(),
       ],
+    );
+  }
+
+  SizedBox _getTagSummaryPanel() {
+    return SizedBox(
+      height: 80,
+      child: Consumer<HistoryProvider>(
+        builder: (context, value, child) {
+          return FutureBuilder<Iterable<im.Interval>>(
+            future: value.intervalsCache.retrive,
+            builder: (context, snap) {
+              if (snap.hasData) {
+                final Iterable<im.Interval> data = snap.data!;
+                return _getTagSummaryContent(data);
+              } else if (snap.hasError) {
+                return Text(snap.error.toString());
+              } else {
+                return const CircularProgressIndicator.adaptive();
+              }
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _getTagSummaryContent(Iterable<im.Interval> data) {
+    final processed = processTagSummary(data);
+    List<Widget> items = [];
+    for (final item in processed.entries) {
+      final tagName = item.key?.tag ?? 'Total';
+      items.add(Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            tagName,
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
+          ),
+          Text(item.value.toReadableString()),
+        ],
+      ));
+    }
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: items,
+      ),
     );
   }
 
@@ -99,15 +107,8 @@ class History extends StatelessWidget {
     return ListView.builder(
       itemBuilder: (context, index) {
         final item = data.elementAt(index);
-        return ListTile(
-          title: Text(
-            item.duration.toReadableString(),
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 16,
-            ),
-          ),
-          subtitle: Text('${getNecessaryDateStr(item.begin)} - ${getNecessaryDateStr(item.end)}'),
+        return HistoryRecord(
+          interval: item,
         );
       },
       itemCount: data.length,
