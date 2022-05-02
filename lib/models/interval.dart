@@ -10,4 +10,6 @@ class Interval {
   late DateTime begin;
   late DateTime end;
   final tags = IsarLinks<Tag>();
+
+  Duration get duration => end.difference(begin);
 }
