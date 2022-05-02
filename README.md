@@ -1,7 +1,7 @@
 # Working hours
 
 App for tracking time spent on given task.
-Suports tags are can generate reports.
+Suports tags and can generate reports.
 
 - [X] Stop watch;
 - [X] Record History;
