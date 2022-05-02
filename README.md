@@ -10,6 +10,11 @@ Suports tags and can generate reports.
 - [ ] Filter history by tags;
 - [ ] Tags;
 - [ ] Reports;
+    - [ ] Document generation;
+    - [ ] Added hourly rate calculation;
+    - [ ] Graphs;
+- [ ] Export data;
+- [ ] Import data;
 
 Design: https://whimsical.com/working-hours-ReNL3kp9AB5hdpkWxNam7M
 
