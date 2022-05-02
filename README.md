@@ -4,7 +4,8 @@ App for tracking time spent on given task.
 Suports tags are can generate reports.
 
 - [X] Stop watch;
-- [X] History;
+- [X] Record History;
+- [ ] Edit history record;
 - [ ] Filter history;
 - [ ] Tags;
 - [ ] Reports;
