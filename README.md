@@ -5,9 +5,9 @@ Suports tags are can generate reports.
 
 - [X] Stop watch;
 - [X] History;
-- [] Filter history;
-- [] Tags;
-- [] Reports;
+- [ ] Filter history;
+- [ ] Tags;
+- [ ] Reports;
 
 Design: https://whimsical.com/working-hours-ReNL3kp9AB5hdpkWxNam7M
 
