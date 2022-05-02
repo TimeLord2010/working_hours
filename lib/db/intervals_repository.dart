@@ -2,10 +2,11 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:work_hours_tracking/models/interval.dart';
 import 'package:work_hours_tracking/models/tag.dart';
+import 'package:work_hours_tracking/repository/delete_interval_repository.dart';
 import 'package:work_hours_tracking/repository/find_intervals_repository.dart';
 import 'package:work_hours_tracking/repository/put_interval_repository.dart';
 
-class IntervalsRepository with FindIntervalsRepository, PutIntervalRepository {
+class IntervalsRepository with FindIntervalsRepository, PutIntervalRepository, DeleteIntervalRepository {
   Future<Isar> get _rep async {
     final dir = await getApplicationSupportDirectory();
     final isar = await Isar.open(
@@ -70,6 +71,16 @@ class IntervalsRepository with FindIntervalsRepository, PutIntervalRepository {
         id = await rep.intervals.put(interval);
       });
       return id!;
+    } finally {
+      await _close(rep);
+    }
+  }
+
+  @override
+  Future<void> delete(int id) async {
+    final rep = await _rep;
+    try {
+      await rep.intervals.delete(id);
     } finally {
       await _close(rep);
     }
