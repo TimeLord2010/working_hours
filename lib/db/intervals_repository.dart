@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:work_hours_tracking/models/interval.dart';
@@ -8,7 +7,6 @@ import 'package:work_hours_tracking/repository/put_interval_repository.dart';
 
 class IntervalsRepository with FindIntervalsRepository, PutIntervalRepository {
   Future<Isar> get _rep async {
-    debugPrint('Open');
     final dir = await getApplicationSupportDirectory();
     final isar = await Isar.open(
       schemas: [
@@ -21,7 +19,6 @@ class IntervalsRepository with FindIntervalsRepository, PutIntervalRepository {
   }
 
   Future<bool> _close(Isar isar) {
-    debugPrint('Close');
     return isar.close();
   }
 
