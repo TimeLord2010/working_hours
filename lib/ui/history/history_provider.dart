@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:work_hours_tracking/models/interval.dart' as im;
 import 'package:work_hours_tracking/ui/providers/interval_provider.dart';
-import 'package:work_hours_tracking/utils/single_cached_value.dart';
 
 class HistoryProvider with ChangeNotifier {
   final _stopWatchTimer = StopWatchTimer();
@@ -19,16 +18,6 @@ class HistoryProvider with ChangeNotifier {
 
   int ticks = 0;
   DateTime? begin;
-
-  SingleCachedValue<Future<Iterable<im.Interval>>>? _intervalsCache;
-  SingleCachedValue<Future<Iterable<im.Interval>>> get intervalsCache {
-    _intervalsCache ??= SingleCachedValue<Future<Iterable<im.Interval>>>(
-      getter: () {
-        return context.read<IntervalProvider>().find();
-      },
-    );
-    return _intervalsCache!;
-  }
 
   @override
   void dispose() async {
@@ -52,7 +41,7 @@ class HistoryProvider with ChangeNotifier {
 
   void onStopWatchTap() {
     if (_stopWatchTimer.isRunning) {
-      stop();
+      reset();
     } else {
       begin = DateTime.now();
       _stopWatchTimer.onExecute.add(StopWatchExecute.start);
@@ -78,16 +67,11 @@ class HistoryProvider with ChangeNotifier {
       ..begin = begin!
       ..end = DateTime.now();
     await context.read<IntervalProvider>().put(interval);
-    intervalsCache.clear();
+    //intervalsCache.clear();
     _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
     tickSubscription?.cancel();
     tickSubscription = null;
     ticks = 0;
-    notifyListeners();
-  }
-
-  void clearIntervals() {
-    intervalsCache.clear();
     notifyListeners();
   }
 }

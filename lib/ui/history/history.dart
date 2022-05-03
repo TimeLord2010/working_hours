@@ -4,6 +4,7 @@ import 'package:work_hours_tracking/models/tag.dart' as tm;
 import 'package:work_hours_tracking/ui/history/history_provider.dart';
 import 'package:work_hours_tracking/models/interval.dart' as im;
 import 'package:work_hours_tracking/ui/history/history_record/history_record.dart';
+import 'package:work_hours_tracking/ui/providers/interval_provider.dart';
 import 'package:work_hours_tracking/utils/duration.dart';
 
 class History extends StatelessWidget {
@@ -32,10 +33,10 @@ class History extends StatelessWidget {
   SizedBox _getTagSummaryPanel() {
     return SizedBox(
       height: 80,
-      child: Consumer<HistoryProvider>(
+      child: Consumer<IntervalProvider>(
         builder: (context, value, child) {
           return FutureBuilder<Iterable<im.Interval>>(
-            future: value.intervalsCache.retrive,
+            future: value.find(),
             builder: (context, snap) {
               if (snap.hasData) {
                 final Iterable<im.Interval> data = snap.data!;
@@ -82,14 +83,14 @@ class History extends StatelessWidget {
 
   Widget _getHistorySearchPanel() {
     return Expanded(
-      child: Consumer<HistoryProvider>(
+      child: Consumer<IntervalProvider>(
         builder: (context, provider, child) {
           return FutureBuilder<Iterable<im.Interval>>(
-            future: provider.intervalsCache.retrive,
+            future: provider.find(),
             builder: (context, snap) {
               if (snap.hasData) {
                 final data = snap.data!;
-                return _getHistorySearchContent(data);
+                return _getHistorySearchContent(provider, data);
               } else if (snap.hasError) {
                 return Text(snap.error.toString());
               } else {
@@ -102,14 +103,21 @@ class History extends StatelessWidget {
     );
   }
 
-  ListView _getHistorySearchContent(Iterable<im.Interval> data) {
-    return ListView.builder(
+  Widget _getHistorySearchContent(IntervalProvider provider, Iterable<im.Interval> data) {
+    return ListView.separated(
+      separatorBuilder: (context, index) {
+        return Divider(
+          color: Colors.grey.shade300,
+          indent: 15,
+          endIndent: 15,
+        );
+      },
       itemBuilder: (context, index) {
         final item = data.elementAt(index);
         return HistoryRecord(
           interval: item,
-          onDelete: () {
-            // TODO
+          onDelete: () async {
+            await provider.delete(item.id);
           },
         );
       },
@@ -187,27 +195,27 @@ class History extends StatelessWidget {
           ],
         ),
         const Spacer(),
-        Selector<HistoryProvider, bool>(
-          selector: (context, value) => value.isRunning,
-          builder: (context, value, child) {
-            if (value) {
-              return Align(
-                alignment: Alignment.topCenter,
-                child: TextButton(
-                  onPressed: Provider.of<HistoryProvider>(context, listen: false).reset,
-                  child: const Text('Stop'),
-                ),
-              );
-            } else {
-              return const SizedBox.shrink();
-            }
-          },
-        ),
+        // Selector<HistoryProvider, bool>(
+        //   selector: (context, value) => value.isRunning,
+        //   builder: (context, value, child) {
+        //     if (value) {
+        //       return Align(
+        //         alignment: Alignment.topCenter,
+        //         child: TextButton(
+        //           onPressed: Provider.of<HistoryProvider>(context, listen: false).reset,
+        //           child: const Text('Stop'),
+        //         ),
+        //       );
+        //     } else {
+        //       return const SizedBox.shrink();
+        //     }
+        //   },
+        // ),
       ],
     );
   }
 
   IconData _getStopWatchIcon(bool isRunning) {
-    return isRunning ? Icons.pause : Icons.play_arrow;
+    return isRunning ? Icons.stop : Icons.play_arrow;
   }
 }
