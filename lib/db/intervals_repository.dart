@@ -56,7 +56,8 @@ class IntervalsRepository with FindIntervalsRepository, PutIntervalRepository, D
         });
       }
       condition ??= query.endLessThan(DateTime.now());
-      return await condition.sortByBeginDesc().offset(_skip).limit(_limit).findAll();
+      final result = await condition.sortByBeginDesc().offset(_skip).limit(_limit).findAll();
+      return result;
     } finally {
       await _close(rep);
     }
