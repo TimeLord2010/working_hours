@@ -85,4 +85,9 @@ class HistoryProvider with ChangeNotifier {
     ticks = 0;
     notifyListeners();
   }
+
+  void clearIntervals() {
+    intervalsCache.clear();
+    notifyListeners();
+  }
 }
