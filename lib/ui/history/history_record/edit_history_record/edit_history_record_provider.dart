@@ -15,10 +15,10 @@ class EditHistoryRecordProvider with ChangeNotifier {
     required this.interval,
     required this.onDelete,
   })  : beginController = TextEditingController(
-          text: getNecessaryDateStr(interval.begin)!,
+          text: getNecessaryDateStr(interval.begin),
         ),
         endController = TextEditingController(
-          text: getNecessaryDateStr(interval.end)!,
+          text: getNecessaryDateStr(interval.end),
         );
 
   @override
