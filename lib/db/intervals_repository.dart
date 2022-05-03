@@ -80,7 +80,9 @@ class IntervalsRepository with FindIntervalsRepository, PutIntervalRepository, D
   Future<void> delete(int id) async {
     final rep = await _rep;
     try {
-      await rep.intervals.delete(id);
+      await rep.writeTxn((rep) async {
+        await rep.intervals.delete(id);
+      });
     } finally {
       await _close(rep);
     }
