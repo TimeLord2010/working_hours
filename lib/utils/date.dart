@@ -45,18 +45,25 @@ String? getDateStr(
   throw Exception('Invalid date format.');
 }
 
-String? getNecessaryDateStr(
-  DateTime? dt, {
+String getNecessaryDateStr(
+  DateTime dt, {
   DateFormat format = DateFormat.iso,
+  bool forceTime = false,
 }) {
-  if (dt == null) return null;
   var now = DateTime.now();
+  String _time() {
+    if (!forceTime) {
+      return '';
+    }
+    return ' ' + getTimeStr(date: dt);
+  }
+
   if (now.year != dt.year) {
-    return getDateStr(dt, format: format);
+    return getDateStr(dt, format: format)! + _time();
   } else if (now.month != dt.month) {
-    return getDateStr(dt, year: false, format: format);
+    return getDateStr(dt, year: false, format: format)! + _time();
   } else if (now.day != dt.day) {
-    return getDateStr(dt, year: false, month: true, format: format);
+    return getDateStr(dt, year: false, month: true, format: format)! + _time();
   } else {
     return getTimeStr(date: dt);
   }
