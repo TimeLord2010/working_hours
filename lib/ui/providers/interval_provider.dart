@@ -26,4 +26,9 @@ class IntervalProvider with ChangeNotifier {
       skip: skip,
     );
   }
+
+  Future<void> delete(int id) async {
+    await intervalHandler.delete(id);
+    notifyListeners();
+  }
 }
