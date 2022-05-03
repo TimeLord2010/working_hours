@@ -12,4 +12,12 @@ class Interval {
   final tags = IsarLinks<Tag>();
 
   Duration get duration => end.difference(begin);
+
+  @override
+  bool operator ==(Object other) {
+    return other is Interval && other.id == id;
+  }
+
+  @override
+  int get hashCode => id;
 }
