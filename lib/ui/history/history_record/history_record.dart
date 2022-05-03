@@ -33,7 +33,8 @@ class HistoryRecord extends StatelessWidget {
                 fontSize: 16,
               ),
             ),
-            subtitle: _getDateRange(),
+            subtitle: _getTimeRange(),
+            trailing: _getDate(),
             onTap: provider.onTap,
           );
         },
@@ -41,7 +42,22 @@ class HistoryRecord extends StatelessWidget {
     );
   }
 
-  Text _getDateRange() {
-    return Text('${getNecessaryDateStr(interval.begin)} - ${getNecessaryDateStr(interval.end)}');
+  Text _getDate() {
+    return Text(
+      getDateStr(interval.begin)!,
+      style: const TextStyle(
+        color: Colors.grey,
+      ),
+    );
+  }
+
+  Text _getTimeRange() {
+    final _begin = getTimeStr(date: interval.begin);
+    final _end = getTimeStr(date: interval.end);
+    if (_begin == _end) {
+      return Text('${getTimeStr(date: interval.begin, showSecond: true)} - ${getTimeStr(date: interval.end, showSecond: false)}');
+    } else {
+      return Text('$_begin - $_end');
+    }
   }
 }
