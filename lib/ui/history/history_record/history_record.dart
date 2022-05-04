@@ -40,12 +40,23 @@ class HistoryRecord extends StatelessWidget {
   }
 
   Text _getDate() {
-    return Text(
-      getDateStr(interval.begin)!,
-      style: const TextStyle(
-        color: Colors.grey,
-      ),
-    );
+    final beginStr = getDateStr(interval.begin)!;
+    final endStr = getDateStr(interval.end)!;
+    if (beginStr == endStr) {
+      return Text(
+        beginStr,
+        style: const TextStyle(
+          color: Colors.grey,
+        ),
+      );
+    } else {
+      return Text(
+        '$beginStr - $endStr',
+        style: const TextStyle(
+          color: Colors.grey,
+        ),
+      );
+    }
   }
 
   Text _getTimeRange() {
