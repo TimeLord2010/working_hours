@@ -116,9 +116,6 @@ class History extends StatelessWidget {
         final item = data.elementAt(index);
         return HistoryRecord(
           interval: item,
-          onDelete: () async {
-            await provider.delete(item.id);
-          },
         );
       },
       itemCount: data.length,
