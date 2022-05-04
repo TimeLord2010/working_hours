@@ -4,10 +4,10 @@ App for tracking time spent on given task.
 Suports tags and can generate reports.
 
 - [X] Stop watch;
-- [X] Record History;
-- [X] Edit history record;
-- 🛠️ Filter history by date range;
-- [ ] Create tag;
+- [X] Create record;
+- [X] Edit record;
+- [X] Filter history by date range;
+- 🛠️ Create tag;
 - [ ] Delete tag;
 - [ ] Edit tag;
 - [ ] Create history record with tags;
