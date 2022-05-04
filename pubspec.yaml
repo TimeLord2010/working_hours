@@ -14,6 +14,8 @@ dependencies:
   isar_flutter_libs: 2.2.1
   path_provider: ^2.0.9
   material_design_icons_flutter: ^5.0.6595
+  day_night_time_picker: ^1.0.5
+  syncfusion_flutter_datepicker: ^20.1.52
 dev_dependencies:
   flutter_test:
     sdk: flutter
