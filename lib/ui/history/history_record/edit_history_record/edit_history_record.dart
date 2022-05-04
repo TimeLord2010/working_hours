@@ -79,15 +79,29 @@ class EditHistoryRecord extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          Align(
-            alignment: Alignment.centerRight,
-            child: IconButton(
-              onPressed: provider.delete,
-              icon: const Icon(
-                Icons.delete,
-                color: Colors.red,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: IconButton(
+                  onPressed: provider.delete,
+                  icon: const Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                  ),
+                ),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: IconButton(
+                  onPressed: provider.save,
+                  icon: const Icon(
+                    Icons.save,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

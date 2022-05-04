@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:work_hours_tracking/factories/delete_interval_factory.dart';
+import 'package:provider/provider.dart';
 import 'package:work_hours_tracking/models/interval.dart' as im;
-import 'package:work_hours_tracking/utils/date.dart';
+import 'package:work_hours_tracking/ui/providers/interval_provider.dart';
 
 class EditHistoryRecordProvider with ChangeNotifier {
   final TextEditingController beginController;
@@ -9,17 +9,17 @@ class EditHistoryRecordProvider with ChangeNotifier {
   // - - -
   final BuildContext context;
   final im.Interval interval;
-  final void Function() onDelete;
   EditHistoryRecordProvider({
     required this.context,
     required this.interval,
-    required this.onDelete,
   })  : beginController = TextEditingController(
-          text: getNecessaryDateStr(interval.begin),
+          text: interval.begin.toIso8601String().split('.')[0],
         ),
         endController = TextEditingController(
-          text: getNecessaryDateStr(interval.end),
+          text: interval.end.toIso8601String().split('.')[0],
         );
+
+  String? errorMessage;
 
   @override
   void dispose() {
@@ -29,9 +29,28 @@ class EditHistoryRecordProvider with ChangeNotifier {
   }
 
   Future<void> delete() async {
-    final deleteHandler = gerateDeleteInterval();
-    await deleteHandler.delete(interval.id);
-    onDelete();
+    final intervalProvider = context.read<IntervalProvider>();
+    await intervalProvider.delete(interval.id);
+    Navigator.pop(context);
+  }
+
+  Future<void> save() async {
+    errorMessage = null;
+    final b = DateTime.tryParse(beginController.text);
+    final e = DateTime.tryParse(endController.text);
+    if (b == null) {
+      errorMessage = 'Begin interval is not in a valid date format';
+    }
+    if (e == null) {
+      errorMessage = 'End interval is not in a valid date format';
+    }
+    if (b!.isAfter(e!)) {
+      errorMessage = 'Begin interval must be smaller than end interval';
+    }
+    final intervalHandler = context.read<IntervalProvider>();
+    interval.begin = b;
+    interval.end = e;
+    intervalHandler.put(interval);
     Navigator.pop(context);
   }
 }
