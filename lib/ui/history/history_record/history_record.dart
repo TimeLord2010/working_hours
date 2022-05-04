@@ -55,7 +55,7 @@ class HistoryRecord extends StatelessWidget {
     final _begin = getTimeStr(date: interval.begin);
     final _end = getTimeStr(date: interval.end);
     if (_begin == _end) {
-      return Text('${getTimeStr(date: interval.begin, showSecond: true)} - ${getTimeStr(date: interval.end, showSecond: false)}');
+      return Text('${getTimeStr(date: interval.begin, showSecond: true)} - ${getTimeStr(date: interval.end, showSecond: true)}');
     } else {
       return Text('$_begin - $_end');
     }
