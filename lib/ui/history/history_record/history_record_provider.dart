@@ -9,12 +9,10 @@ class HistoryRecordProvider with ChangeNotifier {
   HistoryRecordProvider({
     required this.context,
     required this.interval,
-    required this.onDelete,
   });
 
   final BuildContext context;
   final im.Interval interval;
-  final void Function() onDelete;
 
   void onTap() async {
     final intervalProvider = context.read<IntervalProvider>();
@@ -26,7 +24,6 @@ class HistoryRecordProvider with ChangeNotifier {
           child: EditHistoryRecord.create((c) => EditHistoryRecordProvider(
                 context: c,
                 interval: interval,
-                onDelete: onDelete,
               )),
         );
       },

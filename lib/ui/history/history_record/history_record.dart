@@ -9,11 +9,9 @@ class HistoryRecord extends StatelessWidget {
   const HistoryRecord({
     Key? key,
     required this.interval,
-    required this.onDelete,
   }) : super(key: key);
 
   final im.Interval interval;
-  final void Function() onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +19,6 @@ class HistoryRecord extends StatelessWidget {
       create: (c) => HistoryRecordProvider(
         context: context,
         interval: interval,
-        onDelete: onDelete,
       ),
       child: Consumer<HistoryRecordProvider>(
         builder: (context, provider, child) {
