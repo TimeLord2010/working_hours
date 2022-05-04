@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:work_hours_tracking/models/tag.dart' as tm;
-import 'package:work_hours_tracking/ui/history/history_provider.dart';
 import 'package:work_hours_tracking/models/interval.dart' as im;
+import 'package:work_hours_tracking/models/tag.dart' as tm;
+import 'package:work_hours_tracking/ui/components/date_time_range_picker.dart';
+import 'package:work_hours_tracking/ui/history/history_provider.dart';
 import 'package:work_hours_tracking/ui/history/history_record/history_record.dart';
 import 'package:work_hours_tracking/ui/providers/interval_provider.dart';
 import 'package:work_hours_tracking/utils/duration.dart';
@@ -83,22 +84,46 @@ class History extends StatelessWidget {
 
   Widget _getHistorySearchPanel() {
     return Expanded(
-      child: Consumer<IntervalProvider>(
-        builder: (context, provider, child) {
-          return FutureBuilder<Iterable<im.Interval>>(
-            future: provider.find(),
-            builder: (context, snap) {
-              if (snap.hasData) {
-                final data = snap.data!;
-                return _getHistorySearchContent(provider, data);
-              } else if (snap.hasError) {
-                return Text(snap.error.toString());
-              } else {
-                return const CircularProgressIndicator.adaptive();
-              }
+      child: Column(
+        children: [
+          Selector<HistoryProvider, List<DateTime?>>(
+            selector: (context, value) => [value.filterBegin, value.filterEnd],
+            builder: (context, value, child) {
+              return Row(
+                children: [
+                  const Text('Interval: '),
+                  DateTimeRangePicker(
+                    begin: value[0],
+                    end: value[1],
+                  ),
+                ],
+              );
             },
-          );
-        },
+          ),
+          Expanded(
+            child: Consumer<IntervalProvider>(
+              builder: (context, provider, child) {
+                final historyProvider = Provider.of<HistoryProvider>(context, listen: false);
+                return FutureBuilder<Iterable<im.Interval>>(
+                  future: provider.find(
+                    begin: historyProvider.filterBegin,
+                    end: historyProvider.filterEnd,
+                  ),
+                  builder: (context, snap) {
+                    if (snap.hasData) {
+                      final data = snap.data!;
+                      return _getHistorySearchContent(provider, data);
+                    } else if (snap.hasError) {
+                      return Text(snap.error.toString());
+                    } else {
+                      return const CircularProgressIndicator.adaptive();
+                    }
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -192,22 +217,6 @@ class History extends StatelessWidget {
           ],
         ),
         const Spacer(),
-        // Selector<HistoryProvider, bool>(
-        //   selector: (context, value) => value.isRunning,
-        //   builder: (context, value, child) {
-        //     if (value) {
-        //       return Align(
-        //         alignment: Alignment.topCenter,
-        //         child: TextButton(
-        //           onPressed: Provider.of<HistoryProvider>(context, listen: false).reset,
-        //           child: const Text('Stop'),
-        //         ),
-        //       );
-        //     } else {
-        //       return const SizedBox.shrink();
-        //     }
-        //   },
-        // ),
       ],
     );
   }
