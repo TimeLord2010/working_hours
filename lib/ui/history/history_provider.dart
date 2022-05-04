@@ -17,7 +17,24 @@ class HistoryProvider with ChangeNotifier {
   StreamSubscription<int>? secondSubscription;
 
   int ticks = 0;
-  DateTime? begin;
+  DateTime? stopWatchBegin;
+  DateTime? _filterBegin;
+
+  DateTime? get filterBegin => _filterBegin;
+
+  set filterBegin(DateTime? filterBegin) {
+    _filterBegin = filterBegin;
+    notifyListeners();
+  }
+
+  DateTime? _filterEnd;
+
+  DateTime? get filterEnd => _filterEnd;
+
+  set filterEnd(DateTime? filterEnd) {
+    _filterEnd = filterEnd;
+    notifyListeners();
+  }
 
   @override
   void dispose() async {
@@ -43,7 +60,7 @@ class HistoryProvider with ChangeNotifier {
     if (_stopWatchTimer.isRunning) {
       reset();
     } else {
-      begin = DateTime.now();
+      stopWatchBegin = DateTime.now();
       _stopWatchTimer.onExecute.add(StopWatchExecute.start);
       tickSubscription = _stopWatchTimer.rawTime.listen(null);
       tickSubscription!.onData((data) {
@@ -64,10 +81,9 @@ class HistoryProvider with ChangeNotifier {
 
   void reset() async {
     final interval = im.Interval()
-      ..begin = begin!
+      ..begin = stopWatchBegin!
       ..end = DateTime.now();
     await context.read<IntervalProvider>().put(interval);
-    //intervalsCache.clear();
     _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
     tickSubscription?.cancel();
     tickSubscription = null;
