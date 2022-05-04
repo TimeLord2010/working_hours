@@ -31,4 +31,8 @@ class IntervalProvider with ChangeNotifier {
     await intervalHandler.delete(id);
     notifyListeners();
   }
+
+  void updateUI() {
+    notifyListeners();
+  }
 }
