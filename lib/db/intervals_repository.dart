@@ -45,7 +45,7 @@ class IntervalsRepository with FindIntervalsRepository, PutIntervalRepository, D
       }
       QueryBuilder<Interval, Interval, QAfterFilterCondition>? condition;
       if (end != null) {
-        condition = (condition ?? query).endLessThan(end);
+        condition = (condition ?? query).beginLessThan(end);
       }
       if (tags != null && tags.isNotEmpty) {
         condition = (condition ?? query).tags((q) {
