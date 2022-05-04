@@ -5,10 +5,14 @@ Suports tags and can generate reports.
 
 - [X] Stop watch;
 - [X] Record History;
-- 🛠️ Edit history record;
-- [ ] Filter history by date range;
+- [X] Edit history record;
+- 🛠️ Filter history by date range;
+- [ ] Create tag;
+- [ ] Delete tag;
+- [ ] Edit tag;
+- [ ] Create history record with tags;
 - [ ] Filter history by tags;
-- [ ] Tags;
+- [ ] Edit history tags;
 - [ ] Reports;
     - [ ] Document generation;
     - [ ] Added hourly rate calculation;
