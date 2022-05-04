@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:work_hours_tracking/ui/components/wh_text_field.dart';
+import 'package:work_hours_tracking/ui/components/date_and_time_picker.dart';
 import 'package:work_hours_tracking/ui/history/history_record/edit_history_record/edit_history_record_provider.dart';
 import 'package:work_hours_tracking/utils/duration.dart';
 
@@ -38,15 +38,8 @@ class EditHistoryRecord extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: WHTextField(
+                child: DateAndTimePicker(
                   controller: provider.beginController,
-                  textStyle: const TextStyle(
-                    fontSize: 16,
-                  ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.calendar_month),
-                    onPressed: () {},
-                  ),
                 ),
               ),
               const Text(
@@ -56,15 +49,8 @@ class EditHistoryRecord extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: WHTextField(
+                child: DateAndTimePicker(
                   controller: provider.endController,
-                  textStyle: const TextStyle(
-                    fontSize: 16,
-                  ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.calendar_month),
-                    onPressed: () {},
-                  ),
                 ),
               ),
             ],
