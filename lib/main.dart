@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:work_hours_tracking/ui/main_page/main_page.dart';
+import 'package:work_hours_tracking/ui/pages/main_page/main_page.dart';
 
 void main() {
   //debugRepaintRainbowEnabled = true;

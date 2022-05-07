@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:work_hours_tracking/ui/history/history_provider.dart';
+import 'package:work_hours_tracking/ui/pages/history/history_provider.dart';
 import 'package:work_hours_tracking/ui/providers/interval_provider.dart';
 import 'package:work_hours_tracking/utils/date.dart';
 

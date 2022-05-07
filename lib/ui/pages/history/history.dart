@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:work_hours_tracking/models/interval.dart' as im;
 import 'package:work_hours_tracking/models/tag.dart' as tm;
 import 'package:work_hours_tracking/ui/components/date_time_range_picker.dart';
-import 'package:work_hours_tracking/ui/history/history_provider.dart';
-import 'package:work_hours_tracking/ui/history/history_record/history_record.dart';
+import 'package:work_hours_tracking/ui/pages/history/history_provider.dart';
+import 'package:work_hours_tracking/ui/pages/history/history_record/history_record.dart';
 import 'package:work_hours_tracking/ui/providers/interval_provider.dart';
 import 'package:work_hours_tracking/utils/duration.dart';
 

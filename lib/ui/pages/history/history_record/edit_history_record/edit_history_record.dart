@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:work_hours_tracking/ui/components/date_and_time_picker.dart';
-import 'package:work_hours_tracking/ui/history/history_record/edit_history_record/edit_history_record_provider.dart';
+import 'package:work_hours_tracking/ui/pages/history/history_record/edit_history_record/edit_history_record_provider.dart';
 import 'package:work_hours_tracking/utils/duration.dart';
 
 class EditHistoryRecord extends StatelessWidget {

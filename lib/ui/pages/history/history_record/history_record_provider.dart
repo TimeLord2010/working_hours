@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:work_hours_tracking/models/interval.dart' as im;
-import 'package:work_hours_tracking/ui/history/history_record/edit_history_record/edit_history_record.dart';
-import 'package:work_hours_tracking/ui/history/history_record/edit_history_record/edit_history_record_provider.dart';
+import 'package:work_hours_tracking/ui/pages/history/history_record/edit_history_record/edit_history_record.dart';
+import 'package:work_hours_tracking/ui/pages/history/history_record/edit_history_record/edit_history_record_provider.dart';
 import 'package:work_hours_tracking/ui/providers/interval_provider.dart';
 
 class HistoryRecordProvider with ChangeNotifier {
