@@ -2,9 +2,9 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:work_hours_tracking/models/interval.dart';
 import 'package:work_hours_tracking/models/tag.dart';
-import 'package:work_hours_tracking/repository/delete_interval_repository.dart';
-import 'package:work_hours_tracking/repository/find_intervals_repository.dart';
-import 'package:work_hours_tracking/repository/put_interval_repository.dart';
+import 'package:work_hours_tracking/repository/interval/delete_interval_repository.dart';
+import 'package:work_hours_tracking/repository/interval/find_intervals_repository.dart';
+import 'package:work_hours_tracking/repository/interval/put_interval_repository.dart';
 
 class IntervalsRepository with FindIntervalsRepository, PutIntervalRepository, DeleteIntervalRepository {
   Future<Isar> get _rep async {
