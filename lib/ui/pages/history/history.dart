@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:work_hours_tracking/models/interval.dart' as im;
 import 'package:work_hours_tracking/models/tag.dart' as tm;
 import 'package:work_hours_tracking/ui/components/date_time_range_picker.dart';
+import 'package:work_hours_tracking/ui/components/tag_selection.dart';
 import 'package:work_hours_tracking/ui/pages/history/history_provider.dart';
 import 'package:work_hours_tracking/ui/pages/history/history_record/history_record.dart';
 import 'package:work_hours_tracking/ui/providers/interval_provider.dart';
@@ -89,14 +90,17 @@ class History extends StatelessWidget {
           Selector<HistoryProvider, List<DateTime?>>(
             selector: (context, value) => [value.filterBegin, value.filterEnd],
             builder: (context, value, child) {
-              return Row(
-                children: [
-                  const Text('Interval: '),
-                  DateTimeRangePicker(
-                    begin: value[0],
-                    end: value[1],
-                  ),
-                ],
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Row(
+                  children: [
+                    const Text('Interval: '),
+                    DateTimeRangePicker(
+                      begin: value[0],
+                      end: value[1],
+                    ),
+                  ],
+                ),
               );
             },
           ),
@@ -201,19 +205,7 @@ class History extends StatelessWidget {
                 );
               },
             ),
-            Row(
-              children: [
-                InputChip(
-                  label: const Text('+'),
-                  onPressed: () {},
-                ),
-              ]
-                  .map((x) => Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: x,
-                      ))
-                  .toList(),
-            ),
+            const TagSelection(),
           ],
         ),
         const Spacer(),
