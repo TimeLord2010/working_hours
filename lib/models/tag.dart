@@ -8,7 +8,7 @@ class Tag {
   int id = Isar.autoIncrement;
 
   @Index()
-  late String tag;
+  late String name;
 
   late String color;
 }

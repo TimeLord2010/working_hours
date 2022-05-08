@@ -44,8 +44,8 @@ class TagRepository with FindTagRepository, DeleteTagRepository, PutTagRepositor
     final rep = await _rep;
     try {
       final filter = rep.tags.filter();
-      var filtered = title != null ? filter.tagContains(title) : filter.idEqualTo(0);
-      var result = await filtered.sortByTag().offset(skip ?? 0).limit(limit ?? 50).findAll();
+      var filtered = title != null ? filter.nameContains(title) : filter.idEqualTo(0);
+      var result = await filtered.sortByName().offset(skip ?? 0).limit(limit ?? 50).findAll();
       return result;
     } finally {
       await _close(rep);

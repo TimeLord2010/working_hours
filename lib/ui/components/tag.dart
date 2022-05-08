@@ -21,7 +21,7 @@ class Tag extends StatelessWidget {
         MdiIcons.closeCircle,
         color: Colors.grey.shade300,
       ),
-      label: Text(tag.tag,
+      label: Text(tag.name,
           style: const TextStyle(
             color: Colors.white,
           )),
