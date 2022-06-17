@@ -1,16 +1,25 @@
-# work_hours_tracking
+# Working hours
 
-A new Flutter project.
+App for tracking time spent on given task.
+Suports tags and can generate reports.
 
-## Getting Started
+- [X] Stop watch;
+- [X] Create record;
+- [X] Edit record;
+- [X] Filter history by date range;
+- 🛠️ Create tag;
+- [ ] Delete tag;
+- [ ] Edit tag;
+- [ ] Create history record with tags;
+- [ ] Filter history by tags;
+- [ ] Edit history tags;
+- [ ] Reports;
+    - [ ] Document generation;
+    - [ ] Added hourly rate calculation;
+    - [ ] Graphs;
+- [ ] Export data;
+- [ ] Import data;
 
-This project is a starting point for a Flutter application.
+Design: https://whimsical.com/working-hours-ReNL3kp9AB5hdpkWxNam7M
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Generator: flutter pub run build_runner build
